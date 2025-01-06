@@ -11,12 +11,10 @@ export default function Layout() {
       <Suspense fallback={<LoadingSpinner />}>
         <Sidebar />
       </Suspense>
-      
       <div className="flex-1 flex flex-col">
         <Suspense fallback={<LoadingSpinner />}>
           <Header />
         </Suspense>
-        
         <main className="flex-1 overflow-auto">
           <Outlet />
         </main>

@@ -3,12 +3,12 @@ import { createBrowserRouter } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/loading'
 import { ErrorBoundary } from '@/components/error-boundary'
 
-// Lazy load components
+// Lazy load components with correct paths
 const Layout = lazy(() => import('@/components/layout'))
-const Dashboard = lazy(() => import('@/pages/dashboard'))
-const NicheAnalysis = lazy(() => import('@/pages/niche-analysis'))
-const Training = lazy(() => import('@/pages/training'))
-const Analytics = lazy(() => import('@/pages/analytics'))
+const Dashboard = lazy(() => import('@/pages/Dashboard'))
+const NicheAnalysis = lazy(() => import('@/pages/NicheAnalysis'))
+const Training = lazy(() => import('@/pages/Training'))
+const Analytics = lazy(() => import('@/pages/Analytics'))
 
 const withSuspense = (Component: React.LazyExoticComponent<any>) => {
   return (

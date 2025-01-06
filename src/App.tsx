@@ -4,10 +4,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/layout/Navbar";
-import Dashboard from "./pages/Dashboard";
-import NicheAnalysis from "./pages/NicheAnalysis";
-import Training from "./pages/Training";
-import Analytics from "./pages/Analytics";
+import { Suspense, lazy } from 'react';
+
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const NicheAnalysis = lazy(() => import('./pages/NicheAnalysis'));
+const Training = lazy(() => import('./pages/Training'));
+const Analytics = lazy(() => import('./pages/Analytics'));
 
 const queryClient = new QueryClient();
 
@@ -19,12 +21,14 @@ const App = () => (
       <BrowserRouter>
         <div className="min-h-screen bg-background">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/niche-analysis" element={<NicheAnalysis />} />
-            <Route path="/training" element={<Training />} />
-            <Route path="/analytics" element={<Analytics />} />
-          </Routes>
+          <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/niche-analysis" element={<NicheAnalysis />} />
+              <Route path="/training" element={<Training />} />
+              <Route path="/analytics" element={<Analytics />} />
+            </Routes>
+          </Suspense>
         </div>
       </BrowserRouter>
     </TooltipProvider>

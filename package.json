@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --chunks",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -59,7 +59,13 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "axios": "^1.6.7",
+    "cheerio": "^1.0.0-rc.12",
+    "playwright": "^1.30.0",
+    "@google-ai/generativelanguage": "^1.1.0",
+    "google-auth-library": "^9.0.0",
+    "@prisma/client": "^4.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -77,6 +83,8 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "prisma": "^4.5.0",
+    "@vercel/node": "^3.0.0"
   }
 }

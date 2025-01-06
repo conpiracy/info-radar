@@ -1,114 +1,72 @@
 import { PageContainer } from "@/components/layout/PageContainer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowUpRight, TrendingUp, Users, Zap } from "lucide-react";
+import { ProductCard } from "@/components/products/ProductCard";
+import { Product, ProductNiche } from "@/types/product";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const topOffers = [
-  {
-    title: "Digital Marketing Mastery",
-    revenue: "$125,000",
-    growth: "+12.5%",
-    affiliates: 45,
-    category: "Marketing",
-  },
-  {
-    title: "AI Business Automation",
-    revenue: "$98,000",
-    growth: "+28.2%",
-    affiliates: 32,
-    category: "Technology",
-  },
-  {
-    title: "Social Media Influence",
-    revenue: "$87,500",
-    growth: "+15.7%",
-    affiliates: 38,
-    category: "Social Media",
-  },
-];
+// Mock data - replace with actual API call later
+const mockProducts: Product[] = Array.from({ length: 50 }, (_, i) => {
+  const niches: ProductNiche[] = ["gambling", "trading", "betting", "social media", "sales"];
+  const niche = niches[Math.floor(i / 10)]; // Evenly distribute 10 products per niche
+  
+  return {
+    id: `product-${i + 1}`,
+    name: `${niche.charAt(0).toUpperCase() + niche.slice(1)} Product ${i + 1}`,
+    description: "Product description here",
+    niche,
+    revenue: `$${Math.floor(Math.random() * 50000 + 10000)}`,
+    ranking: i + 1,
+    socialLinks: {
+      twitter: "https://twitter.com",
+      instagram: "https://instagram.com",
+      discord: "https://discord.com",
+    },
+    valueProposition: "Comprehensive training and tools to help you succeed in " + niche,
+  };
+});
 
 export default function Dashboard() {
+  const niches: ProductNiche[] = ["gambling", "trading", "betting", "social media", "sales"];
+
   return (
     <PageContainer>
       <div className="space-y-8">
         <div>
-          <h1 className="font-display text-4xl font-bold">Dashboard</h1>
+          <h1 className="text-4xl font-bold">Top Products</h1>
           <p className="text-muted-foreground mt-2">
-            Your info product analytics at a glance
+            Discover the highest-performing info products across different niches
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">$310.5k</div>
-              <p className="text-xs text-muted-foreground">
-                +20.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Affiliates</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">115</div>
-              <p className="text-xs text-muted-foreground">
-                +8 new this week
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
-              <Zap className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">3.2%</div>
-              <p className="text-xs text-muted-foreground">
-                +0.5% improvement
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        <Tabs defaultValue="all" className="w-full">
+          <TabsList className="grid w-full grid-cols-6 lg:w-[600px]">
+            <TabsTrigger value="all">All</TabsTrigger>
+            {niches.map((niche) => (
+              <TabsTrigger key={niche} value={niche}>
+                {niche.charAt(0).toUpperCase() + niche.slice(1)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Top Performing Offers</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {topOffers.map((offer) => (
-                <div
-                  key={offer.title}
-                  className="flex items-center justify-between p-4 rounded-lg bg-secondary/5 hover:bg-secondary/10 transition-colors"
-                >
-                  <div className="space-y-1">
-                    <p className="font-medium">{offer.title}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {offer.category}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <p className="font-medium">{offer.revenue}</p>
-                      <p className="text-sm text-green-500">{offer.growth}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">{offer.affiliates}</p>
-                      <p className="text-sm text-muted-foreground">affiliates</p>
-                    </div>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                </div>
+          <TabsContent value="all" className="mt-6">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {mockProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </TabsContent>
+
+          {niches.map((niche) => (
+            <TabsContent key={niche} value={niche} className="mt-6">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {mockProducts
+                  .filter((product) => product.niche === niche)
+                  .map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
     </PageContainer>
   );

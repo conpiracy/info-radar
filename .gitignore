@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+.next/
+.next/cache/
+.next/cache/.tsbuildinfo

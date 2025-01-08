@@ -1,5 +1,5 @@
-import { PageContainer } from "@/components/layout/PageContainer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageContainer } from "../components/layout/PageContainer";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { BookOpen, MessageSquare, Share2, Target } from "lucide-react";
 
 const trainingModules = [

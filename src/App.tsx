@@ -1,8 +1,9 @@
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RouterProvider } from "react-router-dom";
-import { router } from './routes';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Training from './pages/Training';
+import NicheAnalysis from './pages/NicheAnalysis';
 
 const queryClient = new QueryClient();
 
@@ -12,7 +13,13 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <RouterProvider router={router} />
+        <Router>
+          <Routes>
+            <Route path="/training" element={<Training />} />
+            <Route path="/niche-analysis" element={<NicheAnalysis />} />
+            {/* Add other routes as needed */}
+          </Routes>
+        </Router>
       </TooltipProvider>
     </QueryClientProvider>
   );

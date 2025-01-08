@@ -3,7 +3,6 @@ import { createBrowserRouter } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/loading'
 import { ErrorBoundary } from '@/components/error-boundary'
 
-// Lazy load components with correct paths
 const Layout = lazy(() => import('@/components/layout'))
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const NicheAnalysis = lazy(() => import('@/pages/NicheAnalysis'))
@@ -22,22 +21,23 @@ const withSuspense = (Component: React.LazyExoticComponent<any>) => {
 
 export const router = createBrowserRouter([
   {
+    path: '/',
     element: withSuspense(Layout),
     children: [
       {
-        path: '/',
+        index: true,
         element: withSuspense(Dashboard),
       },
       {
-        path: '/niche-analysis',
+        path: 'niche-analysis',
         element: withSuspense(NicheAnalysis),
       },
       {
-        path: '/training',
+        path: 'training',
         element: withSuspense(Training),
       },
       {
-        path: '/analytics',
+        path: 'analytics',
         element: withSuspense(Analytics),
       },
     ],

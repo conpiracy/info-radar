@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "crons": [{
+    "path": "/api/cron-scrape",
+    "schedule": "0 0 * * *"
+  }],
   "builds": [
     {
       "src": "package.json",
@@ -21,6 +25,7 @@
     },
     {
       "src": "/assets/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
       "dest": "/assets/$1"
     },
     {
@@ -28,7 +33,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/index.html"
     }
   ]
 }

@@ -1,11 +1,10 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "types": ["node"],
-    "noEmit": false
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*"]
+  "include": ["vite.config.ts"]
 }

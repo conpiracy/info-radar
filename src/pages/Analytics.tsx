@@ -1,6 +1,7 @@
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { ChartContainer } from "@/components/ui/chart";
 
 const revenueData = [
   { name: 'Jan', value: 65000 },
@@ -38,18 +39,20 @@ export default function Analytics() {
             <CardContent>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={revenueData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#0D9488"
-                      strokeWidth={2}
-                    />
-                  </LineChart>
+                  <ChartContainer config={{}}>
+                    <LineChart data={revenueData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#0D9488"
+                        strokeWidth={2}
+                      />
+                    </LineChart>
+                  </ChartContainer>
                 </ResponsiveContainer>
               </div>
             </CardContent>

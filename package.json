@@ -9,7 +9,8 @@
     "start": "next start",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@google-ai/generativelanguage": "^1.1.0",

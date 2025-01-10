@@ -1,22 +1,18 @@
-import { lazy, Suspense } from 'react'
-import { createBrowserRouter } from 'react-router-dom'
-import { LoadingSpinner } from '@/components/ui/loading'
-import { ErrorBoundary } from '@/components/error-boundary'
+import { lazy, Suspense, ComponentType } from 'react';
+import { createBrowserRouter } from 'react-router'; // Ensure correct import path
 
-const Layout = lazy(() => import('@/components/layout'))
-const Dashboard = lazy(() => import('@/pages/Dashboard'))
-const NicheAnalysis = lazy(() => import('@/pages/NicheAnalysis'))
-const Training = lazy(() => import('@/pages/Training'))
-const Analytics = lazy(() => import('@/pages/Analytics'))
+const Layout = lazy(() => import('@/components/Layout'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const NicheAnalysis = lazy(() => import('@/pages/NicheAnalysis'));
+const Training = lazy(() => import('@/pages/Training'));
+const Analytics = lazy(() => import('@/pages/Analytics'));
 
-const withSuspense = (Component: React.LazyExoticComponent<any>) => {
-  return (
-    <ErrorBoundary>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Component />
-      </Suspense>
-    </ErrorBoundary>
-  )
+function withSuspense(Component: ComponentType) {
+  return (props: any) => (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Component {...props} />
+    </Suspense>
+  );
 }
 
 export const router = createBrowserRouter([
@@ -42,4 +38,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+]);

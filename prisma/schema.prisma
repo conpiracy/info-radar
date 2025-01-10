@@ -1,20 +1,2 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model ScrapedData {
-  id        String   @id @default(uuid())
-  title     String
-  url       String   @unique
-  date      DateTime
-  content   String   @db.Text // Changed from Json to String to store serialized JSON
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("scraped_data")
-}
+// This file has been moved to the backend repository.
+// Please refer to the backend repository for the Prisma schema.

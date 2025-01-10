@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { BarChart2, BookOpen, Layout, Search } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 const navItems = [
   { icon: Layout, label: "Dashboard", path: "/" },

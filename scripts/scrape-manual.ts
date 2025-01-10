@@ -1,26 +1,31 @@
-import { scrapeData } from '../lib/scraper.js'
-import * as dotenv from 'dotenv'
+import { scrapeData } from '../lib/scraper.js';  // Add .js extension
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-// Load environment variables
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-async function main() {
+const TARGET_URL = 'https://whop.com/discover/f/most_affiliate_earnings_24_hours/';
+
+(async () => {
+  console.log('Starting scrape test...');
+  console.log(`Target URL: ${TARGET_URL}`);
+  
   try {
-    if (!process.env.TARGET_URL) {
-      throw new Error('TARGET_URL environment variable is not set')
-    }
-
-    console.log('Starting manual scrape...')
-    const results = await scrapeData({ 
-      targetUrl: process.env.TARGET_URL 
-    })
-    console.log('Scraping completed successfully!')
-    console.log(`Found ${results.length} items`)
-    console.log('Results:', JSON.stringify(results, null, 2))
+    const result = await scrapeData({ targetUrl: TARGET_URL });
+    
+    console.log(`Successfully scraped ${result.length} items`);
+    
+    // Save results to a JSON file for inspection
+    const outputPath = join(__dirname, 'scrape-results.json');
+    writeFileSync(outputPath, JSON.stringify(result, null, 2));
+    console.log(`Results saved to: ${outputPath}`);
+    
+    process.exit(0);
   } catch (error) {
-    console.error('Scraping failed:', error)
-    process.exit(1)
+    console.error('Scraping failed:', error);
+    process.exit(1);
   }
-}
-
-main()
+})();

@@ -1,20 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-// Define your models here
 model ScrapedData {
   id        String   @id @default(uuid())
   title     String
   url       String   @unique
   date      DateTime
-  content   Json?
-  validated Boolean  @default(false)
+  content   String   @db.Text // Changed from Json to String to store serialized JSON
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "migrate": "prisma migrate dev",
     "serve": "vite preview",
-    "scrape": "NODE_OPTIONS='--loader ts-node/esm' ts-node scripts/scrape-manual.ts"
+    "scrape": "NODE_OPTIONS='--loader ts-node/esm' ts-node scripts/scrape-manual.ts",
+    "scrape:test": "ts-node --esm scripts/scrape-manual.ts"
   },
   "dependencies": {
     "@google-ai/generativelanguage": "^1.1.0",

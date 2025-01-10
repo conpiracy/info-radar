@@ -2,27 +2,28 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { Product, ProductNiche } from "@/types/product";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from 'react';
 
-// Mock data - replace with actual API call later
-const mockProducts: Product[] = Array.from({ length: 50 }, (_, i) => {
-  const niches: ProductNiche[] = ["gambling", "trading", "betting", "social media", "sales"];
-  const niche = niches[Math.floor(i / 10)]; // Evenly distribute 10 products per niche
-  
-  return {
-    id: `product-${i + 1}`,
-    name: `${niche.charAt(0).toUpperCase() + niche.slice(1)} Product ${i + 1}`,
-    description: "Product description here",
-    niche,
-    revenue: `$${Math.floor(Math.random() * 50000 + 10000)}`,
-    ranking: i + 1,
-    socialLinks: {
-      twitter: "https://twitter.com",
-      instagram: "https://instagram.com",
-      discord: "https://discord.com",
-    },
-    valueProposition: "Comprehensive training and tools to help you succeed in " + niche,
-  };
-});
+// State to store fetched products
+const [products, setProducts] = useState<Product[]>([]);
+
+useEffect(() => {
+  async function fetchData() {
+    try {
+      const response = await fetch('/api/scrape');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      // Assuming the data structure is compatible
+      setProducts(data);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  }
+
+  fetchData();
+}, []);
 
 export default function Dashboard() {
   const niches: ProductNiche[] = ["gambling", "trading", "betting", "social media", "sales"];
@@ -49,7 +50,7 @@ export default function Dashboard() {
 
           <TabsContent value="all" className="mt-6">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {mockProducts.map((product) => (
+              {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -58,7 +59,7 @@ export default function Dashboard() {
           {niches.map((niche) => (
             <TabsContent key={niche} value={niche} className="mt-6">
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {mockProducts
+                {products
                   .filter((product) => product.niche === niche)
                   .map((product) => (
                     <ProductCard key={product.id} product={product} />

@@ -1,4 +1,4 @@
-import { scrapeData } from '../lib/scraper.js'
+import { scrapeData, playwrightScrapeData } from '../lib/scraper.js'
 import * as dotenv from 'dotenv'
 
 // Load environment variables
@@ -11,9 +11,12 @@ async function main() {
     }
 
     console.log('Starting manual scrape...')
-    const results = await scrapeData({ 
-      targetUrl: process.env.TARGET_URL 
-    })
+    let results;
+    if (process.env.SCRAPER_TYPE === 'playwright') {
+      results = await playwrightScrapeData({ targetUrl: process.env.TARGET_URL });
+    } else {
+      results = await scrapeData({ targetUrl: process.env.TARGET_URL });
+    }
     console.log('Scraping completed successfully!')
     console.log(`Found ${results.length} items`)
     console.log('Results:', JSON.stringify(results, null, 2))

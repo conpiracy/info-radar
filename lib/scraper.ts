@@ -1,41 +1,53 @@
-import * as cheerio from 'cheerio'
-import fetch from 'node-fetch'
+import { FirecrawlClient } from './firecrawl'
 import prisma from './db'
 import type { ScrapedData, ScraperOptions } from '../types'
 
+interface FirecrawlProduct {
+  title: string;
+  earnings: number;
+  memberCount: number;
+  reviewCount: number;
+  rank: number;
+  category: string;
+}
+
+interface FirecrawlResponse {
+  products: FirecrawlProduct[];
+}
+
 export async function scrapeData({ targetUrl }: ScraperOptions): Promise<ScrapedData[]> {
-  if (!targetUrl) throw new Error('Target URL is required')
+  if (!targetUrl || typeof targetUrl !== 'string') {
+    throw new Error('Valid target URL is required')
+  }
 
   try {
-    const response = await fetch(targetUrl)
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-
-    const html = await response.text()
-    const $ = cheerio.load(html)
+    const firecrawl = new FirecrawlClient()
+    const data = await firecrawl.scrape(targetUrl) as FirecrawlResponse
     const scrapedData: ScrapedData[] = []
 
-    $('.product-card').each((_, el) => {
-      const product = $(el).find('.product-title').text().trim()
-      const revenue = $(el).find('.affiliate-earnings').text().trim()
-      const members = $(el).find('.members-count').text().trim()
-      const reviews = $(el).find('.reviews-count').text().trim()
-      const ranking = $(el).find('.whop-ranking').text().trim()
-      const niche = $(el).find('.niche').text().trim()
-
-      if (product && revenue && members && reviews && ranking && niche) {
-        scrapedData.push({
-          title: product,
-          url: targetUrl,
-          date: new Date().toISOString(),
-          content: { revenue, members, reviews, ranking, niche }
-        })
-      }
-    })
+    // Transform Firecrawl response to our format
+    for (const item of data.products) {
+      scrapedData.push({
+        title: item.title,
+        url: targetUrl,
+        date: new Date().toISOString(),
+        content: {
+          revenue: item.earnings,
+          members: item.memberCount,
+          reviews: item.reviewCount,
+          ranking: item.rank,
+          niche: item.category
+        }
+      })
+    }
 
     const validData = scrapedData.filter(item => (
-      item.title && item.url && item.date &&
-      item.content.revenue && item.content.members &&
-      item.content.reviews && item.content.ranking && item.content.niche
+      item.title && 
+      item.content.revenue > 0 &&
+      item.content.members > 0 &&
+      item.content.reviews >= 0 &&
+      item.content.ranking > 0 &&
+      item.content.niche
     ))
 
     if (validData.length > 0) {
@@ -51,7 +63,8 @@ export async function scrapeData({ targetUrl }: ScraperOptions): Promise<Scraped
 
     return validData
   } catch (error) {
-    console.error('Scraping failed:', error)
-    throw error
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('Scraping failed:', errorMessage)
+    throw new Error(`Scraping failed: ${errorMessage}`)
   }
 }

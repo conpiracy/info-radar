@@ -12,5 +12,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      async function fetchData() {
+        try {
+          const response = await fetch('/api/scrape');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          console.log('Fetched data:', data);
+          // Here you would typically render the data to the page
+          // For example, update a chart or table with the fetched data
+        } catch (error) {
+          console.error('Failed to fetch data:', error);
+        }
+      }
+
+      fetchData();
+    </script>
   </body>
 </html>

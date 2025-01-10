@@ -2,23 +2,29 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from "@/components/ui/chart";
+import { useEffect, useState } from 'react';
 
-const revenueData = [
-  { name: 'Jan', value: 65000 },
-  { name: 'Feb', value: 72000 },
-  { name: 'Mar', value: 85000 },
-  { name: 'Apr', value: 78000 },
-  { name: 'May', value: 92000 },
-  { name: 'Jun', value: 110000 },
-];
+const [revenueData, setRevenueData] = useState([]);
+const [categoryData, setCategoryData] = useState([]);
 
-const categoryData = [
-  { name: 'Marketing', value: 45 },
-  { name: 'Technology', value: 35 },
-  { name: 'Health', value: 28 },
-  { name: 'Finance', value: 25 },
-  { name: 'Lifestyle', value: 20 },
-];
+useEffect(() => {
+  async function fetchData() {
+    try {
+      const response = await fetch('/api/scrape');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      // Assuming the data structure is compatible
+      setRevenueData(data.revenue);
+      setCategoryData(data.categories);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  }
+
+  fetchData();
+}, []);
 
 export default function Analytics() {
   return (

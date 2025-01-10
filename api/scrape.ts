@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import { PrismaClient } from '@prisma/client';
 import { TextServiceClient } from '@google-ai/generativelanguage';
 import { GoogleAuth } from 'google-auth-library';
+import { scrapeData } from '../lib/scraper';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 interface ScrapedContent {
@@ -57,14 +58,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const scrapedData = await recursiveScrape(url);
+    let scrapedData;
+    if (process.env.SCRAPER_TYPE === 'firecrawl') {
+      scrapedData = await scrapeData({ targetUrl: url });
+    } else {
+      scrapedData = await recursiveScrape(url);
+    }
+    
     await prisma.scrapedData.create({
       data: {
         url,
         content: JSON.stringify(scrapedData)
       }
     });
-    
+
     return res.status(200).json({ success: true, data: scrapedData });
   } catch (error) {
     console.error('Handler error:', error);

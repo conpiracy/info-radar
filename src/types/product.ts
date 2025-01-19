@@ -3,14 +3,9 @@ export type ProductNiche = "gambling" | "trading" | "betting" | "social media" |
 export interface Product {
   id: string;
   name: string;
-  description: string;
-  niche: ProductNiche;
-  revenue: string;
-  ranking: number;
-  socialLinks: {
-    twitter?: string;
-    instagram?: string;
-    discord?: string;
-  };
+  category: 'gambling' | 'trading' | 'betting' | 'social media' | 'sales';
+  dailyRevenue: number;
   valueProposition: string;
 }
+
+export type Category = Product['category'];

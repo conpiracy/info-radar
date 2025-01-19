@@ -1,0 +1,28 @@
+
+name: Scrape Backend
+on:
+  schedule:
+    - cron: '0 2 * * *'  # runs every day at 2 AM
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out backend repo
+        uses: actions/checkout@v3
+        with:
+          repository: your-org/your-backend-repo
+          path: backend
+
+      # ...existing steps (lint, build, etc.)...
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Run scraping
+        run: |
+          cd backend
+          npm run scrape

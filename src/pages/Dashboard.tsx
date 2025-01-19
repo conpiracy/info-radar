@@ -1,5 +1,5 @@
 import { PageContainer } from "@/components/layout/PageContainer";
-import { ProductCard } from "@/components/products/ProductCard";
+import { ProductList } from "@/components/products/ProductList";
 import { Product, ProductNiche } from "@/types/product";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -48,22 +48,14 @@ export default function Dashboard() {
           </TabsList>
 
           <TabsContent value="all" className="mt-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {mockProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            <ProductList products={mockProducts} />
           </TabsContent>
 
           {niches.map((niche) => (
             <TabsContent key={niche} value={niche} className="mt-6">
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {mockProducts
-                  .filter((product) => product.niche === niche)
-                  .map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-              </div>
+              <ProductList
+                products={mockProducts.filter((product) => product.niche === niche)}
+              />
             </TabsContent>
           ))}
         </Tabs>

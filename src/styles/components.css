@@ -27,3 +27,22 @@
   width: 90%;
   max-width: 500px;
 }
+
+.expanded {
+  z-index: 1;
+  position: relative;
+}
+
+.expanded [data-content] {
+  max-height: 500px;
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-content] {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-out;
+  overflow: hidden;
+}

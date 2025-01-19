@@ -13,14 +13,14 @@ import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+export function ProductCard({ product, isExpanded, onToggleExpand }: ProductCardProps) {
   return (
-    <Card className="w-full transition-all duration-200 hover:shadow-lg">
-      <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+    <Card className={cn("w-full transition-all duration-200 hover:shadow-lg", { "expanded": isExpanded })}>
+      <CardHeader className="cursor-pointer" onClick={onToggleExpand}>
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-semibold">{product.name}</CardTitle>
           {isExpanded ? (
@@ -39,9 +39,9 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent
+        data-content
         className={cn(
-          "grid gap-4 overflow-hidden transition-all duration-200",
-          isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          "grid gap-4 overflow-hidden transition-all duration-200"
         )}
       >
         <div className="min-h-0">
